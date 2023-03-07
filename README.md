@@ -9,4 +9,4 @@
 - For the title, description, and genre list of each Netflix medium, we want the frequency of each word, and then make these numbers into vectors. TfidfVectorizer (term frequency-inverse document frequency) does this for us.
 
 
-##IN PROGRESS
+## IN PROGRESS
