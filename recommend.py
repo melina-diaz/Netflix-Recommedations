@@ -26,6 +26,7 @@ def clean(text):
   return text
 
 def setup():
+  global data
   data = pd.read_csv("netflixData.csv")
   print("data loaded")
   data = data[["Title", "Description", "Content Type", "Genres", "Imdb Score", "Rating"]]
