@@ -45,9 +45,11 @@ def setup():
   similaritydesc= cosine_similarity(tfidf_matrix)
   global indices
   indices = pd.Series(data.index, index=data['Title']).drop_duplicates()
+  print("data cleaned")
 
-def netflix_recommendation_g(title, similarity1 = similaritygenre, similarity2=similaritydesc):
+def netflix_recommendation_g(title):
   """genre, then description"""
+  similarity1 = similaritygenre, similarity2=similaritydesc
   index = indices[title]
   similarity_scores = list(enumerate(zip(similarity1[index],similarity2[index])))
   similarity_scores = sorted(similarity_scores, key=lambda x: (x[1][0], x[1][1]), reverse=True)
@@ -56,8 +58,9 @@ def netflix_recommendation_g(title, similarity1 = similaritygenre, similarity2=s
   movieindices = [i[0] for i in similarity_scores]
   return data[['Title',"Imdb Score", "Rating"]].iloc[movieindices]
 
-def netflix_recommendation_d(title, similarity1 = similaritygenre, similarity2=similaritydesc):
+def netflix_recommendation_d(title):
   """description, then genre"""
+  similarity1 = similaritygenre, similarity2=similaritydesc
   index = indices[title]
   similarity_scores = list(enumerate(zip(similarity1[index],similarity2[index])))
   similarity_scores = sorted(similarity_scores, key=lambda x: (x[1][1], x[1][0]), reverse=True)
@@ -66,8 +69,9 @@ def netflix_recommendation_d(title, similarity1 = similaritygenre, similarity2=s
   movieindices = [i[0] for i in similarity_scores]
   return data[['Title',"Imdb Score", "Rating"]].iloc[movieindices]
   
-def netflix_recommendation_c(title, similarity1 = similaritygenre, similarity2=similaritydesc):
+def netflix_recommendation_c(title):
   """linear combo of description and genre"""
+  similarity1 = similaritygenre, similarity2=similaritydesc
   index = indices[title]
   similarity_scores = list(enumerate(zip(similarity1[index],similarity2[index])))
   similarity_scores = sorted(similarity_scores, key=lambda x: (x[1][0]+1.6* x[1][1]), reverse=True)
@@ -76,8 +80,9 @@ def netflix_recommendation_c(title, similarity1 = similaritygenre, similarity2=s
   movieindices = [i[0] for i in similarity_scores]
   return data[['Title',"Imdb Score", "Rating"]].iloc[movieindices]
   
-def netFlix_recommendation(title, similarity = similaritygenre):
+def netFlix_recommendation(title):
   """only genre, control"""
+  similarity = similaritygenre
   index = indices[title]
   similarity_scores = list(enumerate(similarity[index]))
   test=similarity_scores
@@ -100,3 +105,5 @@ def show():
   pd.set_option('display.max_rows', None)
   print(data["Title"])
   pd.reset_option('display.max_columns')
+
+setup()
