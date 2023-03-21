@@ -20,5 +20,14 @@ turns into
 
 For the title, description, and genre list of each Netflix medium, we want the frequency of each word, and then make these numbers into vectors. TfidfVectorizer (term frequency-inverse document frequency) does this for us.
 
+**Room for Improvement**
+- Fix recommendation algorithm to know what to do when user inputs a medium in which there exists multiple with the same title.
+- Use Netflix API to call real-time Netflix media catalog instead of relying on outdated catalog.
+- Allow users to input a medium, and it gives attributes and recommendations, therefore user can traverse program like a web.
+- Allow a way for user to input a list of media as input.
+- Perform network analysis in terms of (basic) count by genre, average IMDB, count cast and director, (advanced) centrality scores by recommendations, clusters.
+
+**How to use**
+-
 
 ## IN PROGRESS
