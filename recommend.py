@@ -26,7 +26,6 @@ def clean(text):
     return text
 
 def setup():
-    
     global data
     data = pd.read_csv("netflixData.csv")
     print("Data loaded")
@@ -110,18 +109,18 @@ def compare_fun(title):
     print(netflix_recommendation_c(title))
     print("\ncontrol")
     print(netFlix_recommendation(title))
-    user=input()
+    rawr=input()
     return
 
 def ask():
     user=input("What is the Netflix movie or TV show?\n")
-    while (user.lower() not in titleslower and user.lower()!= "!show" and user.lower()!="!quit"):
+    while (user.lower() not in titleslower and user.lower()!= "!show" and user.lower()!="!quit" and user.lower() != "!help"):
         user=input("Your answer was not recognized. Try again. The title has to be included our Netflix database and is case-sensitive. If you want to view our Netflix database, enter '!show'. \n")
+    if user == "!help":
+        help1()
     if user == "!show":
         show()
         ask()
-    if user == "!quit":
-        return #bug
     return user
     
 def show():
@@ -129,18 +128,25 @@ def show():
     pd.set_option('display.max_rows', None)
     print(data["Title"])
     pd.reset_option('display.max_columns')
-    user=input("")
+    
+def help1():
+    print("!show\tshows Netflix database\n!quit\tterminate program\n!help\tshow this page")
+    rawr=input()
+    return
 
 setup()
 user=input("Hi! This is my Netflix recommendation system. If you provide a Netflix TV show or movie, I can give you a list of related Netflix TV shows or movies.\nDo you have a Netflix TV show or movie in mind? (y/n) If not, you can look at the full list of Netflix media that is applicable. \n")
-while (user.lower() not in ["yes", "no", "y", "n"]):
+while (user.lower() not in ["yes", "no", "y", "n", "!help", "!quit"]):
     user=input("Your answer was not recognized. Do you have a Netflix TV show or movie that you want to receive recommendations for? (y/n) \n")
 if user.lower() in ["no", "n"]:
-    show() #yes have a movie or tv show
-user=ask()
-
-print("Providing recommendations for", user + ". One moment please." )
-compare_fun(user)
-ask()
+    show()
+if user.lower() == "!help":
+    help1()
+while (user != "!quit"):
+    user=ask()
+    if user.lower() in titleslower:
+        print("Providing recommendations for", user + ". One moment please.")
+        compare_fun(user)
 
 #if there are multiple?
+#problem with capitalization
