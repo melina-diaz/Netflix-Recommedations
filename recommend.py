@@ -52,11 +52,10 @@ def setup():
     titleslower=[x.lower() for x in titleslist]
     print("Data cleaned")
 
-def netflix_recommendation_g(title):
+def netflix_recommendation_g(index):
     """genre, then description"""
     similarity1 = similaritygenre
     similarity2=similaritydesc
-    index = indices[title]
     similarity_scores = list(enumerate(zip(similarity1[index],similarity2[index])))
     similarity_scores = sorted(similarity_scores, key=lambda x: (x[1][0], x[1][1]), reverse=True)
     test=similarity_scores
@@ -64,11 +63,10 @@ def netflix_recommendation_g(title):
     movieindices = [i[0] for i in similarity_scores]
     return data[['Title',"Imdb Score", "Rating"]].iloc[movieindices]
 
-def netflix_recommendation_d(title):
+def netflix_recommendation_d(index):
     """description, then genre"""
     similarity1 = similaritygenre
     similarity2=similaritydesc
-    index = indices[title]
     similarity_scores = list(enumerate(zip(similarity1[index],similarity2[index])))
     similarity_scores = sorted(similarity_scores, key=lambda x: (x[1][1], x[1][0]), reverse=True)
     test=similarity_scores
@@ -76,11 +74,10 @@ def netflix_recommendation_d(title):
     movieindices = [i[0] for i in similarity_scores]
     return data[['Title',"Imdb Score", "Rating"]].iloc[movieindices]
     
-def netflix_recommendation_c(title):
+def netflix_recommendation_c(index):
     """linear combo of description and genre"""
     similarity1 = similaritygenre
     similarity2=similaritydesc
-    index = indices[title]
     similarity_scores = list(enumerate(zip(similarity1[index],similarity2[index])))
     similarity_scores = sorted(similarity_scores, key=lambda x: (x[1][0]+1.6* x[1][1]), reverse=True)
     test=similarity_scores
@@ -88,10 +85,9 @@ def netflix_recommendation_c(title):
     movieindices = [i[0] for i in similarity_scores]
     return data[['Title',"Imdb Score", "Rating"]].iloc[movieindices]
   
-def netFlix_recommendation(title):
+def netFlix_recommendation(index):
     """only genre, control"""
     similarity = similaritygenre
-    index = indices[title]
     similarity_scores = list(enumerate(similarity[index]))
     test=similarity_scores
     similarity_scores = sorted(similarity_scores, key=lambda x: x[1], reverse=True)
@@ -101,14 +97,22 @@ def netFlix_recommendation(title):
 
   
 def compare_fun(title):
+    index = indices[title]
+    if not isinstance(index, (int, np.integer)):
+        pd.set_option('display.max_colwidth', None)
+        print(f"There are multiple movies with the name {title}. Here are their indexes and descriptions:")
+        print(data[["Description"]].loc[indices[title]])
+        index=int(input("What is the index of the movie you want?\n"))
+        while index not in list(indices[title]):
+            index=int(input("The chosen index wasn't correct. Try again, the index is the number to the left of the movie and it's description.\n"))
     print("genre priority")
-    print(netflix_recommendation_g(title))
+    print(netflix_recommendation_g(index))
     print("\ndesc priority")
-    print(netflix_recommendation_d(title))
+    print(netflix_recommendation_d(index))
     print("\nlinear combo")
-    print(netflix_recommendation_c(title))
+    print(netflix_recommendation_c(index))
     print("\ncontrol")
-    print(netFlix_recommendation(title))
+    print(netFlix_recommendation(index))
     rawr=input()
     return
 
@@ -148,5 +152,5 @@ while (user != "!quit"):
         print("Providing recommendations for", user + ". One moment please.")
         compare_fun(user)
 
-#if there are multiple?
 #problem with capitalization
+#help functions everywhere (all at once)
